@@ -36,6 +36,14 @@ Environment="HTTPS_PROXY=http://<VM Route Gateway>:<host port>/"
 Environment="NO_PROXY=localhost,127.0.0.1"
 ~~~
 
+## Switch to Minikube Docker Engine
+
+Point your terminal's docker-cli to the Docker Engine inside minikube
+
+~~~
+minikube docker-env
+eval $(minikube -p minikube docker-env)
+~~~
 
 ## Build Docker Image
 
