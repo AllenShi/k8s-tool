@@ -1,0 +1,39 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: tomcat-sample-war-deployment
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: tomcat-sample-war
+  template:
+    metadata:
+      labels:
+        app: tomcat-sample-war
+    spec:
+      containers:
+        - image: allenshi/tomcat-sample-app:v1.0
+          name: tomcat-sample-war-container
+          volumeMounts:
+            - name: server-config-volume
+              mountPath: /usr/local/tomcat/conf/server.xml
+              subPath: server.xml
+          resources:
+            limits: 
+              cpu: 2000m
+              memory: 2048Mi
+            requests:
+              cpu: 1000m 
+              memory: 1024Mi
+          ports:
+            - containerPort: 8080
+            - containerPort: 8099
+          securityContext:
+            capabilities:
+              add: ["SYS_PTRACE", "SYS_ADMIN"]
+            allowPrivilegeEscalation: true
+      volumes:
+        - name: server-config-volume
+          configMap:
+            name: tomcat-server-cust-config
